@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEPT - Center of Excellence in Electrical Power Technology</title>
+    <!-- Use Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- SHARED HEADER -->
+    <div id="header-placeholder"></div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <section class="hero fade-in">
+            <div class="hero-bg"></div>
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <div
+                        style="display:inline-block; padding:4px 12px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:50px; font-size:0.8rem; font-weight:600; margin-bottom:1.5rem; backdrop-filter:blur(4px);">
+                        CENTER OF EXCELLENCE
+                    </div>
+                    <h1>Practical Innovation <br><span style="color:#93c5fd">& Sustainable Wisdom</span></h1>
+                    <p>We bridge the gap between academic theory and industrial reality through Problem-Based Research
+                        and Digital Twin simulations.</p>
+                    <div style="display:flex; gap:1rem; flex-wrap:wrap">
+                        <a href="knowledge.html" class="btn btn-primary">Explore Repository →</a>
+                        <button class="btn btn-outline-white"
+                            onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About
+                            CEPT</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Collaborating for a Future</h2>
+                    <div class="divider"></div>
+                    <p style="max-width:800px; margin:0 auto; color:var(--text-gray); font-size:1.1rem;">
+                        CEPT is an academic partner dedicated to solving real-world challenges in the power sector. We
+                        believe in "Humble Cooperation".
+                    </p>
+                </div>
+                <div class="grid grid-3" style="text-align:center; padding-top:2rem; border-top:1px solid #e2e8f0">
+                    <div>
+                        <h3 class="text-blue">Standard Compliant</h3>
+                        <p class="text-gray">International energy protocols.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-blue">Practical Research</h3>
+                        <p class="text-gray">Solving actual field problems.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-blue">Shared Wisdom</h3>
+                        <p class="text-gray">Transferring knowledge.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-light">
+            <div class="container">
+                <div class="section-header left">
+                    <h2 class="section-title">Focus Areas</h2>
+                    <div class="divider"></div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="card" style="padding:2rem; border-left:4px solid var(--identity-blue)">
+                        <h3 class="text-blue" style="font-size:1.5rem; margin-bottom:1rem">⚡ Digital Twin & RE100</h3>
+                        <p class="card-desc">Real-time simulation to validate Microgrid logic and EV charging
+                            coordination at Gawert Square.</p>
+                    </div>
+                    <div class="card" style="padding:2rem; border-left:4px solid var(--accent-maroon)">
+                        <h3 class="text-maroon" style="font-size:1.5rem; margin-bottom:1rem">🗄️ Problem-Based Research
+                        </h3>
+                        <p class="card-desc">Moving beyond traditional consultancy, we tailor research frameworks to
+                            find specific engineering solutions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="section-header left"
+                    style="display:flex; justify-content:space-between; align-items:end; flex-wrap:wrap; gap:1rem">
+                    <div>
+                        <h2 class="section-title">Featured Documents</h2>
+                        <div class="divider" style="margin:1rem 0"></div>
+                    </div>
+                    <a href="knowledge.html" class="btn-text">View Repository →</a>
+                </div>
+                <div class="grid grid-2" id="featured-docs">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-light">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Latest News</h2>
+                    <div class="divider"></div>
+                </div>
+                <div class="grid grid-2" id="featured-news">
+                    <!-- Populated by JS -->
+                </div>
+                <div style="text-align:center; margin-top:2rem">
+                    <a href="news.html" class="btn-text">Read All News →</a>
+                </div>
+            </div>
+        </section>
+
+        <section style="background-color: white;">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Collaborating Partners</h2>
+                    <div class="divider"></div>
+                    <p style="color:var(--text-gray); font-size:0.95rem;">Working alongside key organizations to drive
+                        sustainable energy innovation.</p>
+                </div>
+                <div class="grid grid-4" style="align-items: center; justify-items: center; gap: 3rem;"
+                    id="partners-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- SHARED FOOTER -->
+    <div id="footer-placeholder"></div>
+
+    <!-- SCRIPTS -->
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/home.js"></script>
+</body>
+
+</html>

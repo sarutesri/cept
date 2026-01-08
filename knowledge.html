@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base - CEPT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container fade-in" style="padding-top:4rem; min-height:80vh">
+        <div class="section-header left">
+            <h2 class="section-title">Knowledge Repository</h2>
+            <div class="divider"></div>
+            <p style="color:var(--text-gray)">Access our research papers, technical reports, and project documentation.
+            </p>
+        </div>
+
+        <div style="margin-bottom:2rem; display:flex; gap:1rem; border-bottom:1px solid #eee; padding-bottom:1rem">
+            <button class="btn btn-primary" style="font-size:0.8rem">All Documents</button>
+            <button class="btn btn-outline" style="font-size:0.8rem">Research Papers</button>
+            <button class="btn btn-outline" style="font-size:0.8rem">Reports</button>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr; gap: 1rem;" id="knowledge-grid">
+            <!-- Populated by JS -->
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/knowledge.js"></script>
+</body>
+
+</html>
