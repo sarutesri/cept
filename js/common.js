@@ -19,10 +19,11 @@ const renderHeader = () => {
         <div class="container">
             <nav>
                 <a href="index.html" class="logo-group">
-                    <div class="logo-box">C</div>
-                    <div class="logo-text">
-                        <h1>CEPT</h1>
-                        <p>CHULALONGKORN UNIVERSITY</p>
+                    <img src="assets/images/logos/chula_logo.png" alt="Chula Logo" class="nav-logo">
+                    <img src="assets/images/logos/cept_logo.png" alt="CEPT Logo" class="nav-logo">
+                    <div class="logo-text-full">
+                        <div class="logo-en">Center of Excellence in Electrical Power Technology (CEPT)</div>
+                        <div class="logo-th">ศูนย์เชี่ยวชาญพิเศษเฉพาะด้านเทคโนโลยีไฟฟ้ากำลัง</div>
                     </div>
                 </a>
                 
@@ -49,6 +50,12 @@ const renderHeader = () => {
             menu.classList.toggle('active');
         });
     }
+
+    // Fade-in Animation
+    setTimeout(() => {
+        const header = placeholder.querySelector('header');
+        if (header) header.classList.add('visible');
+    }, 200); // Short delay before starting fade
 };
 
 // --- FOOTER ---
