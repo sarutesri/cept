@@ -12,10 +12,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         docsContainer.innerHTML = DB.projects.slice(0, 2).map(p => Components.fileCard(p)).join('');
     }
 
-    // Render Latest News
+    // 3. Render Latest Training (Upcoming)
+    const trainingContainer = document.getElementById('latest-training');
+    if (trainingContainer) {
+        const latestCourses = DB.courses
+            .filter(c => c.type === 'upcoming')
+            .slice(0, 3); // Limit to 3 (or 6 if needed to fill grid)
+
+        trainingContainer.innerHTML = latestCourses.map(c => Components.card(c, 'course')).join('');
+    }
+
+    // Render Latest News (Limit 3)
     const newsContainer = document.getElementById('featured-news');
     if (newsContainer) {
-        newsContainer.innerHTML = DB.news.map(n => Components.newsCard(n)).join('');
+        // Sort by date desc if needed, assuming DB.news is already sorted or we rely on index order
+        newsContainer.innerHTML = DB.news.slice(0, 3).map(n => Components.newsCard(n)).join('');
     }
 
     // Render Partners
