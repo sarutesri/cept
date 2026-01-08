@@ -14,9 +14,13 @@ export const DBLoader = {
         const coursePromises = yearsToCheck.map(year => this.tryLoad(`content/training-${year}.md`));
         coursePromises.push(this.tryLoad('content/training-master.md'));
 
-        const [newsResults, courseResults] = await Promise.all([
+        // Load Research (Master file for now, can be yearly split later)
+        const researchPromise = this.tryLoad('content/research.md');
+
+        const [newsResults, courseResults, researchResults] = await Promise.all([
             Promise.all(newsPromises),
-            Promise.all(coursePromises)
+            Promise.all(coursePromises),
+            researchPromise
         ]);
 
         // Flatten and sort by ID descending (newest first)
@@ -45,6 +49,8 @@ export const DBLoader = {
             return course;
         }).sort((a, b) => b.id - a.id);
 
+        DB.research = researchResults.flat();
+
         console.log("DB Loaded with Yearly Split & Auto-Archive:", DB);
         return DB;
     },
@@ -72,8 +78,14 @@ export const DBLoader = {
                         if (colonIndex > -1) {
                             const key = line.substring(1, colonIndex).trim();
                             const value = line.substring(colonIndex + 1).trim();
+
                             if (key === 'id') {
                                 metadata[key] = parseInt(value, 10);
+                            } else if (key === 'pdfs' || key === 'tags') {
+                                // Parse list: [Name](Link), [Name2](Link2) or Tag1, Tag2
+                                metadata[key] = this.parseList(value, key);
+                            } else if (key === 'featured') {
+                                metadata[key] = value.toLowerCase() === 'true';
                             } else {
                                 metadata[key] = value;
                             }
@@ -97,5 +109,26 @@ export const DBLoader = {
             // File not found is expected/ignored
             return [];
         }
+    },
+
+    parseList(value, key) {
+        if (!value) return [];
+
+        if (key === 'tags') {
+            return value.split(',').map(t => t.trim());
+        }
+
+        if (key === 'pdfs') {
+            // Parse [Name](Link) regex
+            const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+            const matches = [];
+            let match;
+            while ((match = regex.exec(value)) !== null) {
+                matches.push({ name: match[1].trim(), link: match[2].trim() });
+            }
+            return matches;
+        }
+
+        return [];
     }
 };

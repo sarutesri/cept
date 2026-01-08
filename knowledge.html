@@ -20,14 +20,29 @@
             </p>
         </div>
 
-        <div style="margin-bottom:2rem; display:flex; gap:1rem; border-bottom:1px solid #eee; padding-bottom:1rem">
-            <button class="btn btn-primary" style="font-size:0.8rem">All Documents</button>
-            <button class="btn btn-outline" style="font-size:0.8rem">Research Papers</button>
-            <button class="btn btn-outline" style="font-size:0.8rem">Reports</button>
+        <div style="margin-bottom:2rem;">
+            <!-- Search Bar -->
+            <div style="margin-bottom:1.5rem; position:relative;">
+                <input type="text" id="kb-search" placeholder="Search by title, fund, year, or keyword..."
+                    style="width:100%; padding:1rem 1.5rem; border:1px solid #e2e8f0; border-radius:50px; outline:none; font-family:'Sarabun', sans-serif; font-size:1rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+                <span
+                    style="position:absolute; right:1.5rem; top:50%; transform:translateY(-50%); color:var(--text-gray);">🔍</span>
+            </div>
+
+            <!-- Filters -->
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Research">Research Papers</button>
+                <button class="filter-btn" data-filter="Project">Projects</button>
+            </div>
         </div>
 
-        <div class="grid" style="grid-template-columns: 1fr; gap: 1rem;" id="knowledge-grid">
+        <div style="display:grid; grid-template-columns:1fr; gap:1rem;" id="knowledge-grid">
             <!-- Populated by JS -->
+        </div>
+
+        <div style="text-align:center; margin-top:3rem; display:none;" id="load-more-container">
+            <button id="btn-load-more" class="btn btn-outline">Load More</button>
         </div>
     </main>
 

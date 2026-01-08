@@ -17,10 +17,75 @@ document.addEventListener('DOMContentLoaded', async () => {
             .map(c => Components.card(c, 'course'))
             .join('');
 
-        pastContainer.innerHTML = DB.courses
-            .filter(c => c.type === 'past')
-            .map(c => Components.card(c, 'course'))
-            .join('');
+        const renderArchive = (items) => {
+            if (items.length === 0) {
+                pastContainer.innerHTML = `<p style="text-align:center; color:var(--text-gray); padding:2rem;">No courses found.</p>`;
+                return;
+            }
+
+            pastContainer.innerHTML = items.map(c => {
+                // Determine Action
+                let actionBtn = `<span style="color:var(--text-gray); font-size:0.9rem; background:#f1f5f9; padding:4px 12px; border-radius:4px;">Closed</span>`;
+
+                if (c.format === 'Online' && c.video) {
+                    actionBtn = `<a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch Video</a>`;
+                }
+
+                return `
+                 <div class="card" style="flex-direction:row; padding:0; overflow:hidden; min-height:140px; align-items:stretch;">
+                    <div style="width:200px; min-width:200px; background:url('${c.img}') center/cover no-repeat;" class="mobile-hide"></div>
+                    <div style="flex:1; padding:1.5rem; display:flex; flex-direction:column; justify-content:center;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
+                            <span style="font-size:0.85rem; color:var(--text-gray); font-weight:600; text-transform:uppercase;">${c.date} • ${c.format || 'On-site'}</span>
+                        </div>
+                        <h4 style="margin:0 0 0.5rem 0; font-size:1.2rem;">${c.title}</h4>
+                        <div style="margin-top:auto; display:flex; justify-content:flex-end;">
+                           ${actionBtn}
+                        </div>
+                    </div>
+                 </div>`;
+            }).join('');
+        };
+
+        // State & Logic
+        let archiveItems = DB.courses.filter(c => c.type === 'past');
+        let searchQuery = '';
+        let currentFilter = 'all';
+
+        const applyArchiveFilters = () => {
+            const filtered = archiveItems.filter(item => {
+                const q = searchQuery.toLowerCase();
+                const matchSearch = !q || item.title.toLowerCase().includes(q) || (item.desc && item.desc.toLowerCase().includes(q));
+                const matchFilter = currentFilter === 'all' || (item.format === currentFilter);
+                return matchSearch && matchFilter;
+            });
+            renderArchive(filtered);
+        };
+
+        // Render Initial
+        applyArchiveFilters();
+
+        // Listeners for Archive
+        const searchInput = document.getElementById('archive-search');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value;
+                applyArchiveFilters();
+            });
+        }
+
+        if (filterBtns) {
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    applyArchiveFilters();
+                });
+            });
+        }
     } else if (detailContainer) {
         // Render Detail
         const id = parseInt(getQueryParam('id'));

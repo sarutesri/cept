@@ -37,5 +37,6 @@ export const DB = {
         { name: "Electricity Generating Authority of Thailand (EGAT)", logo: "assets/images/partners/egat.png" },
         { name: "Metropolitan Electricity Authority (MEA)", logo: "assets/images/partners/mea.png" },
         { name: "Energy Policy and Planning Office (EPPO)", logo: "assets/images/partners/eppo.png" }
-    ]
+    ],
+    research: []
 };

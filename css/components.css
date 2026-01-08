@@ -210,3 +210,44 @@
     max-width: 100%;
     object-fit: contain;
 }
+
+/* --- FILTER BUTTONS --- */
+.filter-btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.95rem;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--identity-blue);
+    color: white;
+    border-color: var(--identity-blue);
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+    color: var(--identity-blue) !important;
+}
+
+@media (max-width: 640px) {
+    .mobile-hide {
+        display: none !important;
+    }
+
+    .card[style*="flex-direction:row"] {
+        flex-direction: column !important;
+    }
+
+    .card[style*="flex-direction:row"]>div:first-child {
+        width: 100% !important;
+        height: 150px;
+    }
+}

@@ -13,10 +13,16 @@
     <div id="header-placeholder"></div>
 
     <main class="container fade-in" style="padding-top:4rem; min-height:80vh">
-        <div class="section-header left">
-            <h2 class="section-title">Training Academy</h2>
-            <div class="divider"></div>
-            <p style="color:var(--text-gray)">Hands-on engineering courses designed for professionals.</p>
+        <div class="section-header left"
+            style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <h2 class="section-title">Training Academy</h2>
+                <div class="divider"></div>
+                <p style="color:var(--text-gray)">Hands-on engineering courses designed for professionals.</p>
+            </div>
+            <a href="schedule.html" class="btn btn-outline">
+                📅 Yearly Schedule
+            </a>
         </div>
 
         <h3 class="text-blue" style="margin-bottom:1.5rem; font-size:1.5rem">Upcoming Courses</h3>
@@ -26,7 +32,27 @@
 
         <h3 style="margin-bottom:1.5rem; font-size:1.5rem; padding-top:2rem; border-top:1px solid #e2e8f0">Past Course
             Archive</h3>
-        <div class="grid grid-4" id="past-courses">
+
+        <!-- Archive Controls -->
+        <div style="margin-bottom:2rem;">
+            <!-- Search Bar -->
+            <div style="margin-bottom:1.5rem; position:relative;">
+                <input type="text" id="archive-search" placeholder="Search archive by title or keyword..."
+                    style="width:100%; padding:1rem 1.5rem; border:1px solid #e2e8f0; border-radius:50px; outline:none; font-family:'Sarabun', sans-serif; font-size:1rem; box-shadow:0 4px 6px -1px rgba(0,0,0,0.05);">
+                <span
+                    style="position:absolute; right:1.5rem; top:50%; transform:translateY(-50%); color:var(--text-gray);">🔍</span>
+            </div>
+
+            <!-- Filters -->
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="On-site">On-site</button>
+                <button class="filter-btn" data-filter="Online">Online</button>
+            </div>
+        </div>
+
+        <!-- Horizontal List Container -->
+        <div style="display:grid; grid-template-columns:1fr; gap:1rem;" id="past-courses">
             <!-- Populated by JS -->
         </div>
     </main>
