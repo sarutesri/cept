@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // State
     let allItems = DB.research || [];
-    // Sort by Year Descending
-    allItems.sort((a, b) => b.year - a.year);
+    // Sort by ID Descending
+    allItems.sort((a, b) => b.id - a.id);
 
     let filteredItems = [...allItems];
     let currentPage = 1;

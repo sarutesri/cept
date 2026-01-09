@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div style="background:var(--white); padding:2.5rem; border-radius:16px; border:1px solid #e2e8f0; max-width:800px; margin:0 auto; margin-bottom:3rem;">
                          <!-- Render Parsed Markdown -->
                         <div id="markdown-content" style="font-size:1.1rem; color:var(--text-dark); line-height:1.7;">
-                            ${marked.parse(news.content)}
+                            ${marked.parse(news.desc || '')}
                         </div>
                     </div>
 
