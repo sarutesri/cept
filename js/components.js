@@ -35,10 +35,18 @@ export const Components = {
         let link = type === 'course' ? `training-detail.html?id=${item.id}` : '#';
 
         let actionBtn = '';
-        if (type === 'course' && !btnDisabled) {
-            actionBtn = `<a href="${link}" class="btn btn-primary" style="justify-content:center; margin-top:1rem; width:100%">Register</a>`;
-        } else if (type === 'course' && btnDisabled) {
-            actionBtn = `<button class="btn" style="background:#f1f5f9; color:#94a3b8; width:100%; margin-top:1rem; justify-content:center" disabled>Closed</button>`;
+        if (type === 'course') {
+            if (item.format === 'Online' && item.video) {
+                actionBtn = `
+                    <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+                        <a href="${item.video}" target="_blank" class="btn btn-primary" style="flex:1; justify-content:center; font-size:0.85rem;">Watch Now</a>
+                        <a href="${link}" class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.85rem;">Details</a>
+                    </div>`;
+            } else if (item.status === 'Closed') {
+                actionBtn = `<a href="${link}" class="btn btn-outline" style="justify-content:center; margin-top:1rem; width:100%">View Details</a>`;
+            } else {
+                actionBtn = `<a href="${link}" class="btn btn-primary" style="justify-content:center; margin-top:1rem; width:100%">Details & Register</a>`;
+            }
         } else {
             actionBtn = `<a href="${link}" class="btn-text" style="margin-top:auto">Read More →</a>`;
         }

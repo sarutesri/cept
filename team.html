@@ -14,22 +14,24 @@
 
     <main class="container fade-in" style="padding-top:4rem; min-height:80vh">
         <div class="section-header">
-            <h2 class="section-title">Organization Structure</h2>
+            <h2 class="section-title">Our Team</h2>
             <div class="divider"></div>
-            <p style="color:var(--text-gray)">Our dedicated team of researchers and engineering experts.</p>
+            <p style="color:var(--text-gray)">Our team of researchers and engineering experts.</p>
         </div>
 
-        <!-- Director Highlight -->
-        <div id="director-section"
-            style="text-align:center; margin-bottom:4rem; padding: 2rem; background: var(--bg-light); border-radius: 12px; display: inline-block; width: 100%;">
-            <!-- Populated by JS -->
+        <!-- Tab Navigation -->
+        <div class="team-tabs"
+            style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; margin-bottom:3rem;">
+            <button class="filter-btn" data-tab="structure">Organization Structure</button>
+            <button class="filter-btn" data-tab="advisory">Board of Advisory</button>
+            <button class="filter-btn" data-tab="executive">Board of Executive</button>
+            <button class="filter-btn active" data-tab="cept">CEPT Team</button>
+            <button class="filter-btn" data-tab="support">Support Team</button>
         </div>
 
-        <!-- Team Grid -->
-        <h3 style="text-align:center; margin-bottom:2rem; font-size:1.25rem; color:var(--text-dark);">Research & Support
-            Team</h3>
-        <div class="grid grid-3" id="team-grid">
-            <!-- Populated by JS -->
+        <!-- Dynamic Content Container -->
+        <div id="team-content-container" style="min-height: 400px; margin-bottom: 4rem;">
+            <!-- Content will be loaded here by JS -->
         </div>
     </main>
 

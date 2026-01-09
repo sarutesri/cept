@@ -81,8 +81,8 @@ export const DBLoader = {
 
                             if (key === 'id') {
                                 metadata[key] = parseInt(value, 10);
-                            } else if (key === 'pdfs' || key === 'tags') {
-                                // Parse list: [Name](Link), [Name2](Link2) or Tag1, Tag2
+                            } else if (key === 'pdfs' || key === 'tags' || key === 'images') {
+                                // Parse list: [Name](Link), [Name2](Link2) or Tag1, Tag2 or Image1, Image2
                                 metadata[key] = this.parseList(value, key);
                             } else if (key === 'featured') {
                                 metadata[key] = value.toLowerCase() === 'true';
@@ -114,7 +114,7 @@ export const DBLoader = {
     parseList(value, key) {
         if (!value) return [];
 
-        if (key === 'tags') {
+        if (key === 'tags' || key === 'images') {
             return value.split(',').map(t => t.trim());
         }
 

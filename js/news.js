@@ -22,22 +22,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.title = `${news.title} - CEPT News`;
 
             // Render Skeleton/Loading Structure
+            // Support multiple images
+            const images = news.images || [news.img];
+            const imagesHtml = images.map(img => `
+                <img src="${img}" style="width:100%; max-width:800px; height:auto; display:block; margin:0 auto; border-radius:12px; box-shadow:var(--shadow-md);">
+            `).join('<br>');
+
+            // Render Detail Structure
             detailContainer.innerHTML = `
-                <div class="card" style="border:none; box-shadow:none;">
-                    <div style="border-radius:12px; margin-bottom:2rem; overflow:hidden;">
-                        <img src="${news.img}" style="width:100%; height:auto; display:block;">
+                <div style="max-width:900px; margin:0 auto;">
+                    
+                    <!-- Header -->
+                    <div style="text-align:center; margin-bottom:3rem;">
+                        <span style="color:var(--accent-maroon); font-weight:700; text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;">${news.category || 'News'}</span>
+                        <h1 style="font-size:2.5rem; margin:1rem 0; line-height:1.2; color:var(--text-dark);">${news.title}</h1>
+                        <p style="font-size:1.1rem; color:var(--text-gray);">${news.date}</p>
                     </div>
-                    <div style="max-width:800px; margin:0 auto;">
-                        <h1 style="font-size:2.5rem; margin-bottom:1.5rem; line-height:1.2;">${news.title}</h1>
-                        
-                        <!-- Render Parsed Markdown -->
-                        <div id="markdown-content" style="font-size:1.2rem; color:var(--text-dark); line-height:1.8;">
+
+                    <!-- Content -->
+                    <div style="background:var(--white); padding:2.5rem; border-radius:16px; border:1px solid #e2e8f0; max-width:800px; margin:0 auto; margin-bottom:3rem;">
+                         <!-- Render Parsed Markdown -->
+                        <div id="markdown-content" style="font-size:1.1rem; color:var(--text-dark); line-height:1.7;">
                             ${marked.parse(news.content)}
                         </div>
+                    </div>
 
-                        <div style="margin-top:3rem; padding-top:2rem; border-top:1px solid #eee;">
-                            <a href="news.html" class="btn btn-outline">← Back to All News</a>
-                        </div>
+                    <!-- Images (Stacked) -->
+                    <div style="display:flex; flex-direction:column; gap:1.5rem; margin-bottom:3rem; align-items:center;">
+                        ${imagesHtml}
+                    </div>
+
+                    <div style="margin-top:3rem; padding-top:2rem; text-align:center;">
+                        <a href="news.html" class="btn btn-outline">← Back to All News</a>
                     </div>
                 </div>
             `;

@@ -1,3 +1,13 @@
+@id: 301
+@code: GRID-EDGE
+@title: Technical Report: แนวโน้มของเทคโนโลยีบริเวณขอบโครงข่ายไฟฟ้าสู่พลังงานหมุนเวียนเต็มร้อย (Outlook for Grid Edge Technologies toward RE100)
+@year: 2567
+@fund: CEPT
+@type: Technical Report
+@featured: true
+@pdfs: [Full Report](https://www.cept.eng.chula.ac.th/th/wp-content/uploads/2024/07/merged_100dpi_75.pdf), [Ch1: Future Power Grid](https://drive.google.com/uc?export=download&id=1Ay8rvNvqdG9Flprz_E5vPRFUZ9huSmoJ), [Ch2: Power Electronics](https://drive.google.com/uc?export=download&id=1VijSpy8aryTzSliGDqEtr0MysCgOMTXq), [Ch3: Grid Edge Monitoring](https://drive.google.com/uc?export=download&id=1Vq7y3DuzYHt1XYx9IlCneywB7dqm-u1q), [Ch4: Communication Tech](https://drive.google.com/uc?export=download&id=1C-3CxnZJzTQZUR3D0ewF6pHwU2BcbpfT), [Ch5: Data Analytics](https://drive.google.com/uc?export=download&id=1VtK33ZeGRYWUjPl63ErPHH7X9MIDVGWE), [Ch6: BAS & EMS](https://drive.google.com/uc?export=download&id=1VujzOj0qRprH4aZ9jqlTEiWBWqXRNr13), [Ch7: Power Forecasting](https://drive.google.com/uc?export=download&id=1VvC9xgcDPDl891y1MUYby1dgrwDGn3D3), [Ch8: Transactive Energy](https://drive.google.com/uc?export=download&id=1Vv_eADhI2EjtFgBq_P-imI_FYyut-zfZ), [Ch9: RE100 Concept](https://drive.google.com/uc?export=download&id=1ArLHeJEM3t6Xg3E2-jqsWBHA1T6RITyY)
+@tags: RE100, Grid Edge, Smart Grid
+---ARTICLE---
 @id: 1
 @code: EMC
 @title: การออกแบบและสร้างเครื่องกำเนิดอิมพัลส์คลื่นผสม 6 กิโลโวลต์ 3 กิโลแอมแปร์ (Design and Construction of 6 kV 3 kA Combination Wave Impulse Generator)

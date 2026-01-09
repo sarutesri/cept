@@ -6,6 +6,7 @@
 @status: Open
 @type: upcoming
 @img: assets/images/courses/course-101.jpg
+@images: assets/images/courses/gis-2026.png, assets/images/courses/course-102.jpg, assets/images/courses/course-101.jpg
 @desc: In-depth study of digital relays, coordination, and fault analysis.
 
 ---ARTICLE---

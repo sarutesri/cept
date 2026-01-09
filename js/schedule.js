@@ -88,13 +88,21 @@ function renderRow(c) {
     // Closed -> Closed Text
     // Upcoming (but not open) -> 'Coming Soon'
 
-    if (c.status === 'Open' || c.status === 'Filling Fast') {
-        action = `<a href="training-detail.html?id=${c.id}" class="btn btn-primary" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Register</a>`;
+    // Action Logic
+    if (c.format === 'Online' && c.video) {
+        action = `
+            <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+                <a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.9rem;">Watch Now</a>
+                <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1rem; font-size:0.9rem;">Details</a>
+            </div>`;
     } else if (c.status === 'Closed') {
-        action = `<span style="color:var(--text-gray); font-weight:600;">Class Closed</span>`;
-    } else {
-        // Default / Upcoming
         action = `<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem;">View Details</a>`;
+    } else if (c.status === 'Open' || c.status === 'Filling Fast') {
+        action = `<a href="training-detail.html?id=${c.id}" class="btn btn-primary" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Details & Register</a>`;
+    } else {
+        // Planned / Announced
+        // Use a subtle button or text
+        action = `<span style="color:var(--text-gray); font-size:0.9rem; background:#f1f5f9; padding:0.5rem 1.5rem; border-radius:4px; display:inline-block;">Coming Soon</span>`;
     }
 
     // Format Badge

@@ -89,8 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const partnersContainer = document.getElementById('partners-grid');
     if (partnersContainer) {
         partnersContainer.innerHTML = DB.partners.map(p => `
-            <div class="partner-logo">
-                <img src="${p.logo}" alt="${p.name}" class="partner-img">
+            <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                <img src="${p.logo}" alt="${p.name}" style="max-height: 80px; max-width: 100%; object-fit: contain;">
+                <p style="font-size: 0.85rem; color: var(--text-gray); font-weight: 500; line-height: 1.4;">${p.name}</p>
             </div>
         `).join('');
     }

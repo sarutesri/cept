@@ -11,9 +11,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const detailContainer = document.getElementById('training-detail');
 
     if (upcomingContainer && pastContainer) {
-        // Render List
+        // Render List - Show only active registration upcoming courses
         upcomingContainer.innerHTML = DB.courses
-            .filter(c => c.type === 'upcoming')
+            .filter(c => c.type === 'upcoming' && (c.status === 'Open' || c.status === 'Filling Fast'))
+            .slice(0, 3)
             .map(c => Components.card(c, 'course'))
             .join('');
 
@@ -25,10 +26,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             pastContainer.innerHTML = items.map(c => {
                 // Determine Action
-                let actionBtn = `<span style="color:var(--text-gray); font-size:0.9rem; background:#f1f5f9; padding:4px 12px; border-radius:4px;">Closed</span>`;
+                let actionBtn = `<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">View Details</a>`;
 
                 if (c.format === 'Online' && c.video) {
-                    actionBtn = `<a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch Video</a>`;
+                    actionBtn = `
+                        <div style="display:flex; gap:0.5rem;">
+                            <a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch</a>
+                            <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">Details</a>
+                        </div>
+                    `;
                 }
 
                 return `
@@ -95,37 +101,46 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.title = `${course.title} - CEPT Training`;
             let badgeClass = course.status === 'Ongoing' || course.status === 'Open' ? 'badge-green' : 'badge-gray';
 
+            // Support multiple images (Posters)
+            const images = course.images || [course.img];
+            const imagesHtml = images.map(img => `
+                <img src="${img}" style="width:100%; max-width:800px; height:auto; display:block; margin:0 auto; border-radius:12px; box-shadow:var(--shadow-md);">
+            `).join('<br>');
+
             detailContainer.innerHTML = `
-                <div class="card" style="border:none; box-shadow:none; flex-direction: row; flex-wrap: wrap; gap: 2rem;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <div style="border-radius:12px; margin-bottom:1rem; overflow:hidden;">
-                            <img src="${course.img}" style="width:100%; height:auto; display:block;">
-                        </div>
-                    </div>
-                    <div style="flex: 1; min-width: 300px;">
+                <div style="max-width:900px; margin:0 auto;">
+                    
+                    <!-- Header -->
+                    <div style="text-align:center; margin-bottom:2rem;">
                         <span class="card-badge ${badgeClass}" style="position:static; display:inline-block; margin-bottom:1rem;">${course.status}</span>
-                        <h1 style="font-size:2rem; margin-bottom:1rem; line-height:1.2;">${course.title}</h1>
-                        
-                        <!-- Render Parsed Markdown -->
-                        <div id="course-content" style="font-size:1.1rem; color:var(--text-dark); margin-bottom:2rem;">
-                            ${marked.parse(course.content)}
-                        </div>
-                        
-                        <div style="background:var(--bg-light); padding:1.5rem; border-radius:8px; margin-bottom:2rem;">
-                            <div style="margin-bottom:0.5rem"><strong>Date:</strong> ${course.date}</div>
+                        <h1 style="font-size:2.5rem; margin-bottom:1rem; line-height:1.2; color:var(--text-dark);">${course.title}</h1>
+                        <p style="font-size:1.1rem; color:var(--text-gray);">${course.date} • ${course.price}</p>
+                    </div>
 
-                            <div style="margin-bottom:0.5rem"><strong>Price:</strong> ${course.price}</div>
-                        </div>
-
-                        ${course.status !== 'Closed'
-                    ? `<a href="${course.link}" class="btn btn-primary" style="width:100%; justify-content:center;">Register Now</a>`
-                    : `<button class="btn" style="background:#f1f5f9; color:#94a3b8; width:100%; justify-content:center;" disabled>Registration Closed</button>`
+                    <!-- Action Button (Moved Up) -->
+                    <div style="text-align:center; margin-bottom:3rem;">
+                         ${course.status !== 'Closed'
+                    ? `<a href="${course.link}" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">Register Now</a>`
+                    : `<button class="btn" style="background:#f1f5f9; color:#94a3b8; padding:1rem 3rem;" disabled>Registration Closed</button>`
                 }
                     </div>
-                </div>
-                
-                 <div style="margin-top:3rem; padding-top:2rem; border-top:1px solid #eee;">
-                    <a href="training.html" class="btn btn-outline">← Back to All Courses</a>
+
+                    <!-- Poster Images (Stacked) -->
+                    <div style="display:flex; flex-direction:column; gap:1.5rem; margin-bottom:3rem; align-items:center;">
+                        ${imagesHtml}
+                    </div>
+
+                    <!-- Content -->
+                    <div style="background:var(--white); padding:2.5rem; border-radius:16px; border:1px solid #e2e8f0; max-width:800px; margin:0 auto;">
+                         <!-- Render Parsed Markdown -->
+                        <div id="course-content" style="font-size:1.1rem; color:var(--text-dark); line-height:1.7;">
+                            ${marked.parse(course.content)}
+                        </div>
+                    </div>
+                    
+                     <div style="margin-top:3rem; padding-top:2rem; text-align:center;">
+                        <a href="training.html" class="btn btn-outline">← Back to All Courses</a>
+                    </div>
                 </div>
             `;
 
