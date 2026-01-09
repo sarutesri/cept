@@ -35,6 +35,7 @@ const renderHeader = () => {
                     <a href="training.html" class="nav-link ${isActive('training.html') || isActive('training-detail.html') ? 'active' : ''}">Training</a>
                     <a href="news.html" class="nav-link ${isActive('news.html') || isActive('news-detail.html') ? 'active' : ''}">News</a>
                     <a href="team.html" class="nav-link ${isActive('team.html')}">Our Team</a>
+                    <a href="#contact" class="nav-link" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</a>
                 </div>
             </nav>
         </div>
@@ -64,7 +65,7 @@ const renderFooter = () => {
     if (!placeholder) return;
 
     placeholder.innerHTML = `
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="grid grid-4" style="gap: 4rem; grid-template-columns: 2fr 1fr 2fr;">
                 <div>
