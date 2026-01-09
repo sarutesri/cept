@@ -60,6 +60,63 @@ document.addEventListener('DOMContentLoaded', () => {
         return html;
     };
 
+    const renderSupport = () => {
+        const sections = [
+            {
+                name: "Academic Services",
+                bgColor: "#eff6ff", // Blue-50
+                textColor: "var(--identity-blue)",
+                borderColor: "#bfdbfe" // Blue-200
+            },
+            {
+                name: "Project Management, Administrative & Procurement",
+                bgColor: "#fff1f2", // Rose-50
+                textColor: "var(--accent-maroon)",
+                borderColor: "#fecdd3" // Rose-200
+            },
+            {
+                name: "Finance, Accounting, Planning & Budgeting",
+                bgColor: "#f8fafc", // Slate-50
+                textColor: "#475569", // Slate-600
+                borderColor: "#e2e8f0" // Slate-200
+            }
+        ];
+
+        let html = `<h3 style="text-align:center; margin-bottom:2rem; font-size:1.5rem; color:var(--text-dark);">Support Team</h3>`;
+
+        sections.forEach(section => {
+            // Filter members matching this specific role name exactly
+            const members = DB.supportTeam.filter(m => m.role === section.name);
+
+            if (members.length > 0) {
+                html += `
+                    <div style="margin-bottom: 3rem; animation: fadeIn 0.5s ease;">
+                        <div style="background-color: ${section.bgColor}; color: ${section.textColor}; padding: 1rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem; font-weight: 700; font-size: 1.25rem; border: 1px solid ${section.borderColor}; box-shadow: var(--shadow-sm);">
+                            ${section.name}
+                        </div>
+                        ${renderGrid(members)}
+                    </div>
+                `;
+            }
+        });
+
+        // Catch any leftovers (if roles don't match exactly)
+        const accountedFor = sections.flatMap(s => s.name);
+        const leftovers = DB.supportTeam.filter(m => !accountedFor.includes(m.role));
+        if (leftovers.length > 0) {
+            html += `
+                <div style="margin-bottom: 3rem; animation: fadeIn 0.5s ease;">
+                    <div style="background-color: #f1f5f9; color: #64748b; padding: 1rem; border-radius: 8px; text-align: center; margin-bottom: 1.5rem; font-weight: 600; font-size: 1.1rem; border: 1px solid #cbd5e1;">
+                        Other Support Staff
+                    </div>
+                    ${renderGrid(leftovers)}
+                </div>
+            `;
+        }
+
+        return html;
+    };
+
     // --- TAB LOGIC ---
 
     const updateContent = (tabId) => {
@@ -76,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.innerHTML = renderCEPT();
                 break;
             case 'support':
-                container.innerHTML = `<h3 style="text-align:center; margin-bottom:2rem; font-size:1.5rem; color:var(--text-dark);">Support Team</h3>` + renderGrid(DB.supportTeam);
+                container.innerHTML = renderSupport();
                 break;
             case 'structure':
                 container.innerHTML = `

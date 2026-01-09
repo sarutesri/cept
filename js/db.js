@@ -28,14 +28,14 @@ export const DB = {
         { id: 202, title: "CEPT Welcomes International Researchers", date: "15 Jan 2026", category: "Activity", img: "assets/images/news/news-202.jpg", contentFile: "content/news/202-intl.md" }
     ],
     team: [
-        { name: "รองศาสตราจารย์ ดร.วิจารณ์ หวังดี", role: "ผู้อำนวยการศูนย์เชี่ยวชาญฯ", area: "Wijarn.W@chula.ac.th", img: "assets/images/team/Wijarn Wangdee.png" },
-        { name: "ผู้ช่วยศาสตราจารย์ ดร. สมบูรณ์ แสงวงศ์วาณิชย์", role: "นักวิจัยอาวุโส", area: "somboon.sa@chula.ac.th", img: "" },
-        { name: "นายวิทวัส งามประดิษฐ์", role: "นักวิจัย", area: "vitthawat.n@chula.ac.th", img: "" },
-        { name: "ดร. ศรุต ศรีสันติสุข", role: "นักวิจัย", area: "Sarute.S@chula.ac.th", img: "" },
-        { name: "นายสุพัฒน์ เฮงยศมาก", role: "นักวิจัย", area: "Supatana.H@chula.ac.th", img: "" },
-        { name: "นางสาวปรีณาพรรณ ปัญญา", role: "นักวิจัย", area: "Preenapan.P@chula.ac.th", img: "" },
-        { name: "นายณฐนนท โตงามรักษ์", role: "นักวิจัย", area: "natanon.t@chula.ac.th", img: "" },
-        { name: "นายธนภณ จ้องจรัสแสง", role: "นักวิจัย", area: "Thanapon.J@chula.ac.th", img: "" }
+        { name: "Assoc. Prof. Wijarn Wangdee, Ph.D.", role: "Executive Director", area: "Wijarn.W@chula.ac.th", img: "assets/images/team/Wijarn Wangdee.png" },
+        { name: "Assistant Professor Somboon Sangwongwanich, Ph.D.", role: "Senior Researcher", area: "somboon.sa@chula.ac.th", img: "" },
+        { name: "Vitthawat Ngampradit", role: "Researcher", area: "vitthawat.n@chula.ac.th", img: "" },
+        { name: "Sarute Srisontisuk, Ph.D.", role: "Researcher", area: "Sarute.S@chula.ac.th", img: "" },
+        { name: "Supatana Hengyotmark", role: "Researcher", area: "Supatana.H@chula.ac.th", img: "" },
+        { name: "Natanon Tongamrak", role: "Researcher", area: "natanon.t@chula.ac.th", img: "" },
+        { name: "Thanapon Jongjarussang", role: "Researcher", area: "Thanapon.J@chula.ac.th", img: "" },
+        { name: "Patchapong Kulthumrongkul", role: "Researcher", area: "", img: "" }
     ],
     partners: [
         { name: "Electricity Generating Authority of Thailand (EGAT)", logo: "assets/images/logos/EGAT.png" },
@@ -44,11 +44,11 @@ export const DB = {
     ],
     research: [],
     supportTeam: [
-        { name: "นางสาวอาภัสรา จิวตระกูล", role: "งานธุรการและงานพัสดุ", area: "apassara.d@chula.ac.th<br>Tel: 0 2218 6544 / 86544", img: "" },
-        { name: "นางสาวรัตนา ธนะเพิ่มพูล", role: "ส่วนงานการเงินและงานบัญชี", area: "rattana.th@chula.ac.th<br>Tel: 0 2218 6483 / 86483", img: "" },
-        { name: "นางสาวสุภาภรณ์ ทองวิทยกุล", role: "ส่วนงานการเงินและงานบัญชี", area: "suphaporn.t@chula.ac.th<br>Tel: 0 2218 6483 / 86483", img: "" },
-        { name: "นางสาวดวงใจ ขันสังข์", role: "งานบริการวิชาการ", area: "duangjai.kh@chula.ac.th<br>Tel: 0 2218 6542 / 86542", img: "" },
-        { name: "นางสาวอธิษฐาน รอดรักษ์", role: "งานบริการวิชาการ", area: "atithan.r@chula.ac.th<br>Tel: 0 2218 6542 / 86542", img: "" }
+        { name: "Apassara Jewtragool", role: "Project Management, Administrative & Procurement", area: "apassara.d@chula.ac.th<br>Tel: 0 2218 6544 / 86544", img: "" },
+        { name: "Rattana Thanapermpool", role: "Finance, Accounting, Planning & Budgeting", area: "rattana.th@chula.ac.th<br>Tel: 0 2218 6483 / 86483", img: "" },
+        { name: "Suphaporn Thongwittayakul", role: "Finance, Accounting, Planning & Budgeting", area: "suphaporn.t@chula.ac.th<br>Tel: 0 2218 6483 / 86483", img: "" },
+        { name: "Duangjai Khunsang", role: "Academic Services", area: "duangjai.kh@chula.ac.th<br>Tel: 0 2218 6542 / 86542", img: "" },
+        { name: "Atithan Rodrak", role: "Academic Services", area: "atithan.r@chula.ac.th<br>Tel: 0 2218 6542 / 86542", img: "" }
     ],
     advisoryBoard: [
         { name: "Prof. Supot Teachavorasinskun, Ph.D.", role: "Chairman", area: "Expert, Faculty of Engineering Chulalongkorn University", img: "assets/images/team/Supot Teachavorasinskun.jpg" },
