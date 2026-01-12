@@ -183,11 +183,22 @@ footer {
     }
 
     .nav-logo {
-        height: 36px;
+        height: 32px;
     }
 
     .logo-text-full {
+        display: flex;
+        padding-left: 0.5rem;
+        margin-left: 0.25rem;
+    }
+
+    .logo-en {
         display: none;
+    }
+
+    .logo-th {
+        font-size: 0.75rem;
+        line-height: 1.1;
     }
 
     .nav-menu {

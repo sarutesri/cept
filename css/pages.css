@@ -1,12 +1,12 @@
 /* --- HERO SECTION --- */
 .hero {
-    height: 85vh;
-    min-height: 600px;
+    min-height: 85vh;
+    height: auto;
     position: relative;
     display: flex;
     align-items: center;
     color: white;
-    padding: 0;
+    padding: 6rem 0 3rem;
 }
 
 .hero-bg {

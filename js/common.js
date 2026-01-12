@@ -115,6 +115,17 @@ const renderFooter = () => {
     `;
 };
 
+// --- FAVICON ---
+const injectFavicon = () => {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+    }
+    link.href = 'assets/images/logos/cept_logo.png';
+};
+
 // --- UTILS ---
 export const getQueryParam = (param) => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -123,6 +134,7 @@ export const getQueryParam = (param) => {
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
+    injectFavicon();
     renderHeader();
     renderFooter();
 });
