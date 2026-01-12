@@ -67,7 +67,8 @@ const renderFooter = () => {
     placeholder.innerHTML = `
     <footer id="contact">
         <div class="container">
-            <div class="grid grid-4" style="gap: 4rem; grid-template-columns: 2fr 1fr 2fr;">
+        <div class="container">
+            <div class="footer-grid">
                 <div>
                     <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:1rem;">
                         <div class="footer-logo-box">C</div>

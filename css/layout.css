@@ -144,15 +144,22 @@ section {
 }
 
 .grid-2 {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .grid-3 {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .grid-4 {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* --- FOOTER GRID --- */
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 4rem;
 }
 
 /* --- FOOTER --- */
@@ -218,6 +225,11 @@ footer {
     .nav-menu.active {
         display: flex;
         animation: slideDown 0.2s ease;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .hero-content h1 {

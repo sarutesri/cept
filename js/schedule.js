@@ -126,7 +126,7 @@ function renderRow(c) {
         </div>
 
         <!-- Info -->
-        <div style="flex:1; min-width:200px;">
+        <div style="flex:1; min-width:140px;">
             <div style="margin-bottom:0.25rem;">
                 <span style="font-weight:700; font-size:1.1rem; color:var(--text-dark); margin-right:0.5rem;">
                     ${c.title}
