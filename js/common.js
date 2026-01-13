@@ -31,7 +31,7 @@ const renderHeader = () => {
 
                 <div class="nav-menu" id="nav-menu">
                     <a href="index.html" class="nav-link ${isActive('index.html')}">Home</a>
-                    <a href="knowledge.html" class="nav-link ${isActive('knowledge.html')}">Our Work</a>
+                    <a href="ourwork.html" class="nav-link ${isActive('ourwork.html')}">Our Work</a>
                     <a href="training.html" class="nav-link ${isActive('training.html') || isActive('training-detail.html') ? 'active' : ''}">Training</a>
                     <a href="news.html" class="nav-link ${isActive('news.html') || isActive('news-detail.html') ? 'active' : ''}">News</a>
                     <a href="team.html" class="nav-link ${isActive('team.html')}">Our Team</a>
@@ -92,7 +92,7 @@ const renderFooter = () => {
                     <h4 style="color:white; margin-bottom:1rem;">Quick Links</h4>
                     <ul style="display:flex; flex-direction:column; gap:0.5rem;">
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="knowledge.html">Our Work</a></li>
+                        <li><a href="ourwork.html">Our Work</a></li>
                         <li><a href="training.html">Training</a></li>
                     </ul>
                 </div>

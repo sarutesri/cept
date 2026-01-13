@@ -7,16 +7,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     await DBLoader.loadAll();
 
     const upcomingContainer = document.getElementById('upcoming-courses');
+    const openContainer = document.getElementById('open-courses');
     const pastContainer = document.getElementById('past-courses');
     const detailContainer = document.getElementById('training-detail');
 
     if (upcomingContainer && pastContainer) {
-        // Render List - Show only active registration upcoming courses
-        upcomingContainer.innerHTML = DB.courses
-            .filter(c => c.type === 'upcoming' && (c.status === 'Open' || c.status === 'Filling Fast'))
-            .slice(0, 3)
-            .map(c => Components.card(c, 'course'))
-            .join('');
+        // 1. Filter Courses
+        const openItems = DB.courses.filter(c => c.type === 'upcoming' && (c.status === 'Open' || c.status === 'Filling Fast'));
+        const upcomingItems = DB.courses
+            .filter(c => c.type === 'upcoming' && c.status !== 'Open' && c.status !== 'Filling Fast')
+            .sort((a, b) => a.id - b.id);
+
+        // 2. Render Open Courses
+        if (openContainer) {
+            openContainer.innerHTML = openItems
+                .map(c => Components.card(c, 'course'))
+                .join('');
+        }
+
+        // 3. Render Upcoming Courses (as List)
+        upcomingContainer.innerHTML = `<div style="display:flex; flex-direction:column; gap:1rem;">` +
+            upcomingItems
+                .slice(0, 2)
+                .map(c => Components.listRow(c))
+                .join('') +
+            `</div>`;
 
         const renderArchive = (items) => {
             if (items.length === 0) {
@@ -42,7 +57,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div style="width:200px; min-width:200px; background:url('${c.img}') center/cover no-repeat;" class="mobile-hide"></div>
                     <div style="flex:1; padding:1.5rem; display:flex; flex-direction:column; justify-content:center;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
-                            <span style="font-size:0.85rem; color:var(--text-gray); font-weight:600; text-transform:uppercase;">${c.date} • ${c.format || 'On-site'}</span>
+                            <span style="font-size:0.85rem; color:var(--text-gray); font-weight:600; text-transform:uppercase;">
+                                ${c.date} • ${c.format || 'On-site'}
+                                ${c.pdu ? `<span style="display:inline-block; margin-left:0.5rem; background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:4px; text-transform:none;">PDU: ${c.pdu}</span>` : ''}
+                            </span>
                         </div>
                         <h4 style="margin:0 0 0.5rem 0; font-size:1.2rem;">${c.title}</h4>
                         <div style="margin-top:auto; display:flex; justify-content:flex-end;">
@@ -62,7 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const filtered = archiveItems.filter(item => {
                 const q = searchQuery.toLowerCase();
                 const matchSearch = !q || item.title.toLowerCase().includes(q) || (item.desc && item.desc.toLowerCase().includes(q));
-                const matchFilter = currentFilter === 'all' || (item.format === currentFilter);
+                const matchFilter = currentFilter === 'all' || item.format.includes(currentFilter);
                 return matchSearch && matchFilter;
             });
             renderArchive(filtered);
@@ -120,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <!-- Action Button (Moved Up) -->
                     <div style="text-align:center; margin-bottom:3rem;">
                          ${course.status !== 'Closed'
-                    ? `<a href="${course.link}" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">Register Now</a>`
+                    ? `<a href="${course.formLink || course.link || '#'}" target="_blank" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">Register Now</a>`
                     : `<button class="btn" style="background:#f1f5f9; color:#94a3b8; padding:1rem 3rem;" disabled>Registration Closed</button>`
                 }
                     </div>

@@ -1,5 +1,6 @@
 import { DB } from './db.js';
 import { DBLoader } from './db-loader.js';
+import { Components } from './components.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Load Data
@@ -13,21 +14,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     // We want to sort chronologically. 
     // DBLoader parses dates for exclusion, but we might need to re-parse for sorting properly if DB.courses is sorted by ID.
 
-    const targetYear = 2026;
+    const targetYear = new Date().getFullYear(); // 2026
+    const targetYearShort = targetYear.toString().slice(-2); // "26"
+
     let courses = DB.courses.filter(c => {
-        // Check if date string contains "2026"
-        // Format: "10-12 Mar 2026"
-        return c.date && c.date.includes(targetYear.toString());
+        if (!c.date) return false;
+        // Check for 4-digit year or 2-digit year suffix
+        // e.g. "2026", "-26", "/26"
+        return c.date.includes(targetYear.toString()) ||
+            c.date.includes(`-${targetYearShort}`) ||
+            c.date.includes(`/${targetYearShort}`);
     });
 
     // Helper to parse date for sorting
+    // Helper to parse date for sorting
     const getMonthIndex = (dateStr) => {
-        // format "10-12 Mar 2025" or "15 Feb 2025"
+        // format "10-12 Mar 2025" or "15 Feb 2025" or "21-Jan-26"
         if (!dateStr) return 99;
-        const parts = dateStr.split(' ');
-        const monthShort = parts[parts.length - 2];
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        return months.indexOf(monthShort);
+        // Split by space OR dash
+        const parts = dateStr.split(/[\s-]+/);
+
+        let monthShort = '';
+        // Heuristic: Month is usually the 2nd part (Day-Month-Year) or 2nd to last part
+        // Example: ["10", "12", "Mar", "2026"] -> Mar is parts[2]
+        // Example: ["21", "Jan", "26"] -> Jan is parts[1]
+
+        // Find which part is a month name
+        const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+        for (const p of parts) {
+            const lower = p.toLowerCase();
+            const idx = months.findIndex(m => lower.startsWith(m));
+            if (idx !== -1) return idx;
+        }
+        return 99; // Not found
     };
 
     // Sort: Month -> Day
@@ -79,70 +99,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Row Renderer
 function renderRow(c) {
-    // Determine Action
-    let action = '';
-
-    // Status Logic
-    // Open -> Register Button
-    // Filling Fast -> Register Button (Warning color?)
-    // Closed -> Closed Text
-    // Upcoming (but not open) -> 'Coming Soon'
-
-    // Action Logic
-    if (c.format === 'Online' && c.video) {
-        action = `
-            <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                <a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.9rem;">Watch Now</a>
-                <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1rem; font-size:0.9rem;">Details</a>
-            </div>`;
-    } else if (c.status === 'Closed') {
-        action = `<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem;">View Details</a>`;
-    } else if (c.status === 'Open' || c.status === 'Filling Fast') {
-        action = `<a href="training-detail.html?id=${c.id}" class="btn btn-primary" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Details & Register</a>`;
-    } else {
-        // Planned / Announced
-        // Use a subtle button or text
-        action = `<span style="color:var(--text-gray); font-size:0.9rem; background:#f1f5f9; padding:0.5rem 1.5rem; border-radius:4px; display:inline-block;">Coming Soon</span>`;
-    }
-
-    // Format Badge
-    let formatBadge = `<span style="background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:4px; font-size:0.8rem; margin-left:0.5rem;">On-site</span>`;
-    if (c.format === 'Online') {
-        formatBadge = `<span style="background:#f0fdf4; color:#15803d; padding:4px 8px; border-radius:4px; font-size:0.8rem; margin-left:0.5rem;">Online</span>`;
-    }
-
-
-    return `
-    <div style="background:white; border:1px solid #e2e8f0; border-radius:8px; padding:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; margin-bottom:0.5rem; transition: all 0.2s;" onmouseover="this.style.borderColor='#94a3b8'" onmouseout="this.style.borderColor='#e2e8f0'">
-        
-        <!-- Date Circle -->
-        <div style="text-align:center; min-width:60px;">
-            <div style="font-size:1.5rem; font-weight:700; color:var(--accent-maroon); line-height:1;">
-                ${c.date.split(' ')[0].split('-')[0]}
-            </div>
-            <div style="font-size:0.85rem; color:var(--text-gray); text-transform:uppercase;">
-                ${c.date.split(' ')[1] || ''}
-            </div>
-        </div>
-
-        <!-- Info -->
-        <div style="flex:1; min-width:140px;">
-            <div style="margin-bottom:0.25rem;">
-                <span style="font-weight:700; font-size:1.1rem; color:var(--text-dark); margin-right:0.5rem;">
-                    ${c.title}
-                </span>
-                ${formatBadge}
-            </div>
-            <div style="font-size:0.9rem; color:var(--text-gray);">
-                ${c.status === 'Filling Fast' ? '🔥 <strong>Filling Fast</strong> • ' : ''} 
-                Price: ${c.price || '-'}
-            </div>
-        </div>
-
-        <!-- Action -->
-        <div style="text-align:right;">
-            ${action}
-        </div>
-    </div>
-    `;
+    return Components.listRow(c);
 }

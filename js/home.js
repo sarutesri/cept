@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const trainingContainer = document.getElementById('latest-training');
     if (trainingContainer) {
         const latestCourses = DB.courses
-            .filter(c => c.type === 'upcoming')
-            .slice(0, 3); // Limit to 3 (or 6 if needed to fill grid)
+            .filter(c => c.type === 'upcoming' && (c.status === 'Open' || c.status === 'Filling Fast'))
+            .slice(0, 3); // Limit to 3
 
         trainingContainer.innerHTML = latestCourses.map(c => Components.card(c, 'course')).join('');
     }
