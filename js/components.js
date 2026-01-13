@@ -39,10 +39,10 @@ export const Components = {
             if (options.hideBadge) {
                 // For upcoming lists where we don't want to emphasize action yet, or maybe just 'Details'
                 actionBtn = `<a href="${link}" class="btn btn-outline" style="justify-content:center; margin-top:1rem; width:100%">View Details</a>`;
-            } else if (item.format === 'Online' && item.video) {
+            } else if (item.vdoUrl) {
                 actionBtn = `
                     <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-                        <a href="${item.video}" target="_blank" class="btn btn-primary" style="flex:1; justify-content:center; font-size:0.85rem;">Watch Now</a>
+                        <a href="${item.vdoUrl}" target="_blank" class="btn btn-primary" style="flex:1; justify-content:center; font-size:0.85rem;">Watch Now</a>
                         <a href="${link}" class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.85rem;">Details</a>
                     </div>`;
             } else if (item.status === 'Closed') {

@@ -43,10 +43,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Determine Action
                 let actionBtn = `<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">View Details</a>`;
 
-                if (c.format === 'Online' && c.video) {
+                if (c.vdoUrl) {
                     actionBtn = `
                         <div style="display:flex; gap:0.5rem;">
-                            <a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch</a>
+                            <a href="${c.vdoUrl}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch</a>
                             <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">Details</a>
                         </div>
                     `;
@@ -136,9 +136,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
 
                     <!-- Action Button (Moved Up) -->
-                    <div style="text-align:center; margin-bottom:3rem;">
+                    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:3rem;">
+                         ${course.vdoUrl ? `<a href="${course.vdoUrl}" target="_blank" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">▶ Watch Now</a>` : ''}
                          ${course.status !== 'Closed'
-                    ? `<a href="${course.formLink || course.link || '#'}" target="_blank" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">Register Now</a>`
+                    ? `<a href="${course.formLink || course.link || '#'}" target="_blank" class="btn btn-outline" style="padding:1rem 3rem; font-size:1.1rem;">Register Now</a>`
                     : `<button class="btn" style="background:#f1f5f9; color:#94a3b8; padding:1rem 3rem;" disabled>Registration Closed</button>`
                 }
                     </div>
