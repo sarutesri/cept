@@ -106,6 +106,11 @@ const renderFooter = () => {
                     <a href="https://maps.app.goo.gl/6LtMD7G4RFj8UYne8" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; color:#60a5fa; margin-top:0.5rem;">
                         📍 Get Directions (Google Maps)
                     </a>
+                    <a href="https://www.facebook.com/messages/t/cucept.training" target="_blank" class="btn btn-outline" style="margin-top:1rem; border-color:white; color:white; width:fit-content; display:flex; gap:0.5rem; align-items:center;">
+                        <!-- Messenger Icon -->
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.69 5.51 4.37 7.23L6 22l4.89-2.61c.36.04.72.07 1.11.07 5.52 0 10-4.03 10-9s-4.48-9-10-9zm6 8-3.09 3.32L12 11l-3.91 2.32 3.09-3.32L14.09 12l3.91-2.32z"/></svg>
+                        Chat via Facebook
+                    </a>
                 </div>
             </div>
             <div style="text-align:center; margin-top:3rem; padding-top:2rem; border-top:1px solid #1e293b; font-size:0.8rem;">
