@@ -183,6 +183,19 @@ footer {
     border-radius: 2px;
 }
 
+#contact-info-box {
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-top: -1.5rem;
+    /* Pull up to align text */
+    /* Rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Optional: Add a subtle background to make it look like a box even when not pulsing? 
+       For now, just keeping it transparent until pulsed, or same bg. 
+       Let's stick to the user request: "Rounded corners" visible during pulse (via shadow) or always? 
+       Usually implies the shape itself. */
+}
+
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     .mobile-toggle {

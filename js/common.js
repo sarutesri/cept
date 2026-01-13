@@ -35,7 +35,7 @@ const renderHeader = () => {
                     <a href="training.html" class="nav-link ${isActive('training.html') || isActive('training-detail.html') ? 'active' : ''}">Training</a>
                     <a href="news.html" class="nav-link ${isActive('news.html') || isActive('news-detail.html') ? 'active' : ''}">News</a>
                     <a href="team.html" class="nav-link ${isActive('team.html')}">Our Team</a>
-                    <a href="#contact" class="nav-link" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Contact</a>
+                    <a href="#contact" class="nav-link">Contact</a>
                 </div>
             </nav>
         </div>
@@ -96,7 +96,7 @@ const renderFooter = () => {
                         <li><a href="training.html">Training</a></li>
                     </ul>
                 </div>
-                <div>
+                <div id="contact-info-box" style="transition: transform 0.3s ease;">
                     <h4 style="color:white; margin-bottom:1rem;">Contact Us</h4>
                     <p style="margin-bottom:0.25rem;">Center of Excellence in Electrical Power Technology</p>
                     <p style="margin-bottom:0.25rem;">Faculty of Engineering, Chulalongkorn University</p>
@@ -138,4 +138,62 @@ document.addEventListener('DOMContentLoaded', () => {
     injectFavicon();
     renderHeader();
     renderFooter();
+
+    // --- PAGE TRANSITION: FADE IN ---
+    // Slight delay to ensure CSS is ready
+    setTimeout(() => {
+        document.body.classList.add('page-loaded');
+    }, 50);
+
+    // --- PAGE TRANSITION: FADE OUT & NAVIGATION HANDLER ---
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const targetUrl = link.href;
+        const isInternal = targetUrl.startsWith(window.location.origin) || targetUrl.startsWith('/');
+        const isAnchor = targetUrl.includes('#');
+        // Check if explicitly ending with #contact
+        const isContact = targetUrl.endsWith('#contact');
+        const isNewTab = link.target === '_blank';
+        const isModifier = e.ctrlKey || e.metaKey || e.shiftKey || e.altKey;
+
+        // 1. Handle Contact Scroll & Pulse
+        if (isContact) {
+            e.preventDefault();
+            const contactSection = document.getElementById('contact');
+            const contactInfoBox = document.getElementById('contact-info-box');
+
+            if (contactSection) {
+                // Smooth Scroll
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+
+                // Trigger Pulse Animation on the Info Box
+                if (contactInfoBox) {
+                    setTimeout(() => {
+                        contactInfoBox.classList.add('pulse-active');
+                        // Remove class after animation (1500ms) to allow re-trigger
+                        setTimeout(() => {
+                            contactInfoBox.classList.remove('pulse-active');
+                        }, 1500);
+                    }, 800);
+                }
+            }
+            return;
+        }
+
+        // 2. Handle Standard Page Transition (Fade Out)
+        if (isInternal && !isAnchor && !isNewTab && !isModifier) {
+            e.preventDefault();
+
+            // Start Fade Out
+            document.body.classList.remove('page-loaded');
+            document.body.classList.add('page-exiting');
+
+            // Wait for animation then navigate
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 400); // Matches CSS transition duration
+        }
+    });
 });

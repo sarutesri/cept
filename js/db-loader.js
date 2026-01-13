@@ -58,14 +58,72 @@ export const DBLoader = {
             }
         };
 
+        // Helper to convert Google Drive view links to direct links
+        const convertDriveLink = (url) => {
+            if (!url || typeof url !== 'string') return url;
+            // Check for standard Drive View URL
+            // https://drive.google.com/file/d/VIDEO_ID/view?usp=sharing
+            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                // Use Thumbnail Endpoint (Reliable for <img> tags, avoids download redirect)
+                // sz=w1000 requests a width of 1000px, which is good for quality
+                return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+            }
+            return url;
+        };
+
         ['research', 'projects', 'journals', 'courses', 'news'].forEach(k => {
             if (DB[k]) {
                 DB[k].forEach(item => {
                     // 1. JSON Parsing
                     parseJsonField(item, 'tags');
                     parseJsonField(item, 'pdfs'); // projects/journals
-                    parseJsonField(item, 'images'); // courses
+
+                    // Specialized parsing for images to support Comma-Separated Values (CSV) in cell
+                    // Helper to split CSV string safely
+                    const parseCSV = (val) => {
+                        if (typeof val !== 'string') return null;
+                        val = val.trim();
+                        if (val.startsWith('[') || val.startsWith('{')) {
+                            try { return JSON.parse(val); } catch (e) { }
+                        }
+                        if (val.includes(',')) {
+                            return val.split(',').map(s => s.trim()).filter(s => s);
+                        }
+                        return null;
+                    };
+
+                    // Check 'images' column
+                    if (item.images) {
+                        const parsed = parseCSV(item.images);
+                        if (parsed) item.images = parsed;
+                        else if (typeof item.images === 'string' && item.images) item.images = [item.images]; // Ensure array
+                    }
+
+                    // Check 'img' column (User might put multiple links here for Training)
+                    if (item.img && typeof item.img === 'string') {
+                        const parsed = parseCSV(item.img);
+                        if (parsed) {
+                            // Found list in 'img', promote to 'images'
+                            if (!item.images || item.images.length === 0) {
+                                item.images = parsed;
+                            }
+                            item.img = parsed[0]; // Set first link as main thumb
+                        }
+                    }
+
+                    // NEW: If 'img' is missing but 'images' exists, use the first one from images
+                    if (!item.img && item.images && item.images.length > 0) {
+                        item.img = item.images[0];
+                    }
+
                     parseJsonField(item, 'fileUrl'); // legacy backup
+
+                    // 1.5 Fix Google Drive Links
+                    if (item.img) item.img = convertDriveLink(item.img);
+                    if (item.images && Array.isArray(item.images)) {
+                        item.images = item.images.map(url => convertDriveLink(url));
+                    }
 
                     // 2. ID Normalization
                     if (item.id) item.id = parseInt(item.id);

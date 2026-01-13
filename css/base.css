@@ -12,6 +12,18 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
+
+    /* Page Transition Initial State */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+body.page-loaded {
+    opacity: 1;
+}
+
+body.page-exiting {
+    opacity: 0;
 }
 
 a {
@@ -52,6 +64,7 @@ img {
     animation: fadeIn 0.5s ease forwards;
 }
 
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -60,4 +73,24 @@ img {
     to {
         opacity: 1;
     }
+}
+
+/* Pulse Animation for Contact Highlight */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse-active {
+    animation: pulse 1.5s ease-in-out;
 }
