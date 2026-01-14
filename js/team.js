@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const createMemberCard = (t) => {
         const imgHtml = t.img ? `
             <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; margin:0 auto 1rem; border:1px solid #eee;">
-                <img src="${t.img}" style="width:100%; height:100%; object-fit:cover" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                <img src="${t.img}" style="width:100%; height:100%; object-fit:cover; object-position: top;" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
             </div>` : '';
 
         return `
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <!-- Director Section -->
                 <div style="text-align:center; margin-bottom:3rem; padding: 2rem; background: var(--bg-light); border-radius: 12px; max-width: 800px; margin-left: auto; margin-right: auto; box-shadow: var(--shadow-md);">
                     <div style="width:160px; height:160px; border-radius:50%; overflow:hidden; border:4px solid var(--white); margin:0 auto 1.5rem; box-shadow: var(--shadow-sm);">
-                        <img src="${director.img}" style="width:100%; height:100%; object-fit:cover" onerror="this.src='https://via.placeholder.com/150?text=Director'">
+                        <img src="${director.img}" style="width:100%; height:100%; object-fit:cover; object-position: top;" onerror="this.src='https://via.placeholder.com/150?text=Director'">
                     </div>
                     <h3 style="font-size:1.75rem; margin-bottom:0.5rem; color: var(--identity-blue);">${director.name}</h3>
                     <p style="color:var(--accent-maroon); font-weight:700; font-size:1.2rem; margin-bottom: 0.5rem;">${director.role}</p>
