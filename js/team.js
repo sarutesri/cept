@@ -135,6 +135,21 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'support':
                 container.innerHTML = renderSupport();
                 break;
+            case 'working-group':
+                container.innerHTML = `
+                    <div style="text-align:center; animation: fadeIn 0.5s ease; max-width: 900px; margin: 0 auto;">
+                        <h3 style="text-align:center; margin-bottom:2rem; font-size:1.5rem; color:var(--text-dark);">Working Group</h3>
+                        
+                        <div style="margin-bottom: 2rem; box-shadow: var(--shadow-md); border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                            <img src="assets/images/team/RE100_team_page-0001.jpg" alt="Working Group Page 1" style="width: 100%; height: auto; display: block;">
+                        </div>
+
+                        <div style="margin-bottom: 2rem; box-shadow: var(--shadow-md); border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                            <img src="assets/images/team/RE100_team_page-0002.jpg" alt="Working Group Page 2" style="width: 100%; height: auto; display: block;">
+                        </div>
+                    </div>
+                `;
+                break;
             case 'structure':
                 container.innerHTML = `
                     <div style="text-align:center; animation: fadeIn 0.5s ease;">
