@@ -11,13 +11,13 @@ export const DB = {
     news: [],
     team: [
         { name: "Assoc. Prof. Wijarn Wangdee, Ph.D.", role: "Executive Director", area: "Wijarn.W@chula.ac.th", img: "assets/images/team/Wijarn Wangdee.png" },
-        { name: "Assistant Professor Somboon Sangwongwanich, Ph.D.", role: "Senior Research Engineer", area: "somboon.sa@chula.ac.th", img: "" },
-        { name: "Vitthawat Ngampradit", role: "Head of Procurement / Research Engineer", area: "vitthawat.n@chula.ac.th", img: "" },
+        { name: "Assistant Professor Somboon Sangwongwanich, Ph.D.", role: "Senior Research Engineer", area: "Somboon.Sa@chula.ac.th", img: "" },
+        { name: "Vitthawat Ngampradit", role: "Head of Procurement / Research Engineer", area: "Vitthawat.N@chula.ac.th", img: "" },
         { name: "Sarute Srisontisuk, Ph.D.", role: "Research Engineer", area: "Sarute.S@chula.ac.th", img: "" },
         { name: "Supatana Hengyotmark", role: "Senior Research Engineer", area: "Supatana.H@chula.ac.th", img: "" },
-        { name: "Natanon Tongamrak", role: "Research Engineer", area: "natanon.t@chula.ac.th", img: "" },
+        { name: "Natanon Tongamrak", role: "Research Engineer", area: "Natanon.T@chula.ac.th", img: "" },
         { name: "Thanapon Jongjarussang", role: "Research Engineer", area: "Thanapon.J@chula.ac.th", img: "" },
-        { name: "Patchapong Kulthumrongkul", role: "Research Engineer", area: "", img: "" }
+        { name: "Patchapong Kulthumrongkul", role: "Research Engineer", area: "Patchapong.K@chula.ac.th", img: "" }
     ],
     partners: [
         { name: "Electricity Generating Authority of Thailand (EGAT)", logo: "assets/images/logos/EGAT.png" },
