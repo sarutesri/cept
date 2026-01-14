@@ -55,9 +55,9 @@ nav {
 }
 
 .logo-th {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: var(--text-gray);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-maroon);
     line-height: 1.2;
 }
 

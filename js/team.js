@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <!-- Researchers Grid -->
-                <h3 style="text-align:center; margin-bottom:2rem; font-size:1.5rem; color:var(--text-dark);">Researchers & Engineers</h3>
+                <h3 style="text-align:center; margin-bottom:2rem; font-size:1.5rem; color:var(--text-dark);">Research & Development Team</h3>
                 ${renderGrid(researchers)}
             </div>
         `;
