@@ -39,21 +39,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            pastContainer.innerHTML = items.map(c => {
-                // Determine Action
-                let actionBtn = `<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">View Details</a>`;
+            const visibleItems = items.slice(0, archiveLimit);
+            const html = visibleItems.map(c => {
+                // Action Button Logic
+                let buttons = [];
 
-                if (c.vdoUrl) {
-                    actionBtn = `
-                        <div style="display:flex; gap:0.5rem;">
-                            <a href="${c.vdoUrl}" target="_blank" class="btn btn-primary" style="padding:6px 16px; font-size:0.9rem;">▶ Watch</a>
-                            <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">Details</a>
-                        </div>
-                    `;
+                // Video Logic
+                if (c.vdoUrl && Array.isArray(c.vdoUrl)) {
+                    buttons.push(Components.dropdownAction(c.vdoUrl, 'Watch', 'btn-primary'));
                 }
 
+                // PDF Logic
+                if (c.pdfUrl && Array.isArray(c.pdfUrl)) {
+                    buttons.push(Components.dropdownAction(c.pdfUrl, 'PDF', 'btn-outline'));
+                }
+                buttons.push(`<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:6px 16px; font-size:0.9rem;">Details</a>`);
+
+                let actionBtn = `<div style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:flex-end;">${buttons.join('')}</div>`;
+
                 return `
-                 <div class="card" style="flex-direction:row; padding:0; overflow:hidden; min-height:140px; align-items:stretch;">
+                 <div class="card" style="flex-direction:row; padding:0; min-height:140px; align-items:stretch; margin-bottom:1rem;">
                     <div style="width:200px; min-width:200px; background:url('${c.img}') center/cover no-repeat;" class="mobile-hide"></div>
                     <div style="flex:1; padding:1.5rem; display:flex; flex-direction:column; justify-content:center;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
@@ -69,14 +74,38 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                  </div>`;
             }).join('');
+
+            // "See More" Button
+            if (items.length > archiveLimit) {
+                pastContainer.innerHTML = html + `
+                    <div style="text-align:center; margin-top:1rem;">
+                        <button id="btn-see-more-archive" class="btn btn-outline" style="padding:0.75rem 2rem;">See More</button>
+                    </div>
+                `;
+                // Add Event Listener
+                setTimeout(() => {
+                    const btn = document.getElementById('btn-see-more-archive');
+                    if (btn) {
+                        btn.addEventListener('click', () => {
+                            archiveLimit += 10; // Show 10 more
+                            renderArchive(items);
+                        });
+                    }
+                }, 0);
+            } else {
+                pastContainer.innerHTML = html;
+            }
         };
 
         // State & Logic
         let archiveItems = DB.courses.filter(c => c.type === 'past');
         let searchQuery = '';
         let currentFilter = 'all';
+        let archiveLimit = 3;
 
-        const applyArchiveFilters = () => {
+        const applyArchiveFilters = (resetLimit = false) => {
+            if (resetLimit) archiveLimit = 3; // Reset on filter change
+
             const filtered = archiveItems.filter(item => {
                 const q = searchQuery.toLowerCase();
                 const matchSearch = !q || item.title.toLowerCase().includes(q) || (item.desc && item.desc.toLowerCase().includes(q));
@@ -96,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 searchQuery = e.target.value;
-                applyArchiveFilters();
+                applyArchiveFilters(true);
             });
         }
 
@@ -106,7 +135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     currentFilter = btn.dataset.filter;
-                    applyArchiveFilters();
+                    applyArchiveFilters(true);
                 });
             });
         }
@@ -136,8 +165,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
 
                     <!-- Action Button (Moved Up) -->
-                    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:3rem;">
-                         ${course.vdoUrl ? `<a href="${course.vdoUrl}" target="_blank" class="btn btn-primary" style="padding:1rem 3rem; font-size:1.1rem; box-shadow: var(--shadow-md);">▶ Watch Now</a>` : ''}
+                     <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:3rem;">
+                     <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:3rem;">
+                         <!-- Video -->
+                         <!-- Video -->
+                         ${(() => {
+                    if (!course.vdoUrl || !Array.isArray(course.vdoUrl) || course.vdoUrl.length === 0) return '';
+                    return Components.dropdownAction(course.vdoUrl, 'Video', 'btn-primary');
+                })()}
+                         
+                         <!-- PDF -->
+                         ${(() => {
+                    if (!course.pdfUrl || !Array.isArray(course.pdfUrl) || course.pdfUrl.length === 0) return '';
+                    return Components.dropdownAction(course.pdfUrl, 'Download PDF', 'btn-outline');
+                })()}
                          ${course.status !== 'Closed'
                     ? `<a href="${course.formLink || course.link || '#'}" target="_blank" class="btn btn-outline" style="padding:1rem 3rem; font-size:1.1rem;">Register Now</a>`
                     : `<button class="btn" style="background:#f1f5f9; color:#94a3b8; padding:1rem 3rem;" disabled>Registration Closed</button>`

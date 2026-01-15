@@ -4,7 +4,52 @@
  */
 
 export const Components = {
-    fileCard: (item) => `
+    // Shared Dropdown Rendering Logic
+    dropdownAction: (links, label, btnClass = 'btn-outline') => {
+        if (!links || links.length === 0) return '';
+
+        if (links.length === 1) {
+            // Check if link object or string
+            const url = typeof links[0] === 'string' ? links[0] : links[0].link;
+            const text = typeof links[0] === 'string' ? label : (links[0].name || label);
+            return `<a href="${url}" target="_blank" class="btn ${btnClass}" style="font-size:0.9rem">${text}</a>`;
+        }
+
+        // Multiple Items -> Dropdown
+        const items = links.map((item, i) => {
+            const url = typeof item === 'string' ? item : item.link;
+            const text = typeof item === 'string' ? `${label} ${i + 1}` : item.name;
+            return `<a href="${url}" target="_blank" class="dropdown-item" style="display:block; padding:8px 16px; text-decoration:none; color:var(--text-dark); font-size:0.9rem; border-radius:4px; transition:background 0.2s;">
+                        ${text}
+                    </a>`;
+        }).join('');
+
+        return `
+        <div style="position:relative; display:inline-block;" class="dropdown">
+            <button class="btn ${btnClass}" style="min-width:120px; justify-content:center;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'" onblur="setTimeout(() => this.nextElementSibling.style.display = 'none', 200)">
+                ${label} (${links.length}) ▾
+            </button>
+            <div class="dropdown-menu">
+                ${items}
+            </div>
+        </div>`;
+    },
+
+    fileCard: (item) => {
+        // Prepare Links
+        let links = [];
+        if (item.pdfs && Array.isArray(item.pdfs)) {
+            links = item.pdfs;
+        } else if (item.link) {
+            links = [item.link];
+        }
+
+        // Render Action
+        const actionHtml = Components.dropdownAction(links, 'Download', 'btn-outline');
+        // Fallback for no links
+        const finalAction = actionHtml || `<button class="btn btn-outline" disabled style="opacity:0.5; font-size:0.85rem">Download</button>`;
+
+        return `
         <div class="doc-card">
             <div class="doc-icon">
                 ${item.type === 'PDF' ? '📄' : item.type === 'Report' ? '📊' : '📝'}
@@ -20,12 +65,11 @@ export const Components = {
                 </div>
             </div>
             <div class="doc-action">
-                <button class="btn btn-outline" style="font-size:0.85rem">
-                    ↓ Download
-                </button>
+                ${finalAction}
             </div>
         </div>
-    `,
+    `;
+    },
 
     card: (item, type, options = {}) => {
         let badgeClass = item.status === 'Ongoing' || item.status === 'Open' ? 'badge-green' : 'badge-gray';
@@ -36,20 +80,25 @@ export const Components = {
 
         let actionBtn = '';
         if (type === 'course') {
-            if (options.hideBadge) {
-                // For upcoming lists where we don't want to emphasize action yet, or maybe just 'Details'
-                actionBtn = `<a href="${link}" class="btn btn-outline" style="justify-content:center; margin-top:1rem; width:100%">View Details</a>`;
-            } else if (item.vdoUrl) {
-                actionBtn = `
-                    <div style="display:flex; gap:0.5rem; margin-top:1rem;">
-                        <a href="${item.vdoUrl}" target="_blank" class="btn btn-primary" style="flex:1; justify-content:center; font-size:0.85rem;">Watch Now</a>
-                        <a href="${link}" class="btn btn-outline" style="flex:1; justify-content:center; font-size:0.85rem;">Details</a>
-                    </div>`;
-            } else if (item.status === 'Closed') {
-                actionBtn = `<a href="${link}" class="btn btn-outline" style="justify-content:center; margin-top:1rem; width:100%">View Details</a>`;
-            } else {
-                actionBtn = `<a href="${link}" class="btn btn-primary" style="justify-content:center; margin-top:1rem; width:100%">Details & Register</a>`;
+            let buttons = [];
+
+            // Video Dropdown/Button
+            if (item.vdoUrl && Array.isArray(item.vdoUrl) && item.vdoUrl.length > 0) {
+                buttons.push(Components.dropdownAction(item.vdoUrl, 'Watch', 'btn-primary'));
             }
+
+            // PDF Dropdown/Button
+            if (item.pdfUrl && Array.isArray(item.pdfUrl) && item.pdfUrl.length > 0) {
+                buttons.push(Components.dropdownAction(item.pdfUrl, 'PDF', 'btn-outline'));
+            }
+
+            const isRegister = item.status === 'Open' || item.status === 'Filling Fast';
+            const mainText = isRegister ? 'Register' : 'Details';
+            const mainClass = isRegister ? 'btn-primary' : 'btn-outline';
+
+            buttons.push(`<a href="${link}" class="btn ${mainClass}" style="flex:1; justify-content:center; font-size:0.85rem;">${mainText}</a>`);
+
+            actionBtn = `<div style="display:flex; gap:0.5rem; margin-top:1rem;">${buttons.join('')}</div>`;
         } else {
             actionBtn = `<a href="${link}" class="btn-text" style="margin-top:auto">Read More →</a>`;
         }
@@ -99,22 +148,39 @@ export const Components = {
 
     listRow: (c) => {
         // Determine Action
-        let action = '';
+        let buttons = [];
+        // Fix: use vdoUrl from CSV, fallback to video if legacy
+        let vdo = c.vdoUrl || c.video;
 
-        if (c.format === 'Online' && c.video) {
-            action = `
-                <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                    <a href="${c.video}" target="_blank" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.9rem;">Watch Now</a>
-                    <a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1rem; font-size:0.9rem;">Details</a>
-                </div>`;
-        } else if (c.status === 'Closed') {
-            action = `<button class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem; opacity:0.6; cursor:not-allowed;" disabled>Registration Closed</button>`;
-        } else if (c.status === 'Open' || c.status === 'Filling Fast') {
-            action = `<a href="training-detail.html?id=${c.id}" class="btn btn-primary" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Details & Register</a>`;
-        } else {
-            // Planned / Announced -> Button Disabled
-            action = `<button class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem; opacity:0.6; cursor:not-allowed;" disabled>Coming Soon</button>`;
+        if (vdo) {
+            // Ensure array
+            if (!Array.isArray(vdo)) vdo = [vdo];
+            buttons.push(Components.dropdownAction(vdo, 'Watch', 'btn-primary'));
         }
+
+        if (c.pdfUrl && Array.isArray(c.pdfUrl)) {
+            buttons.push(Components.dropdownAction(c.pdfUrl, 'PDF', 'btn-outline'));
+        }
+
+        // Registration / Details Logic
+        if (c.status === 'Open' || c.status === 'Filling Fast') {
+            buttons.push(`<a href="training-detail.html?id=${c.id}" class="btn btn-primary" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Register</a>`);
+        } else {
+            // Check if we have other content (Watch/PDF) -> Show 'Details'
+            // If nothing else and not open -> Show 'Coming Soon' or 'Details' depending on preference
+            // Preserving "Coming Soon" logic for non-open upcoming courses
+            if (c.status === 'Closed') {
+                buttons.push(`<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Details</a>`);
+            } else {
+                if (buttons.length > 0) {
+                    buttons.push(`<a href="training-detail.html?id=${c.id}" class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem;">Details</a>`);
+                } else {
+                    buttons.push(`<button class="btn btn-outline" style="padding:0.5rem 1.5rem; font-size:0.9rem; opacity:0.6; cursor:not-allowed;" disabled>Coming Soon</button>`);
+                }
+            }
+        }
+
+        let action = `<div style="display:flex; gap:0.5rem; justify-content:flex-end;">${buttons.join('')}</div>`;
 
         // Format Badge
         let formatBadge = `<span style="background:#eff6ff; color:#1e40af; padding:4px 8px; border-radius:4px; font-size:0.8rem; margin-left:0.5rem;">On-site</span>`;

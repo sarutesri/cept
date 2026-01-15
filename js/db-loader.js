@@ -119,6 +119,27 @@ export const DBLoader = {
 
                     // Training Specific
                     if (k === 'courses') {
+                        // Parse vdoUrl
+                        if (item.vdoUrl) {
+                            const parsed = parseCSVField(item.vdoUrl);
+                            if (parsed) {
+                                // Assume array of strings
+                                item.vdoUrl = parsed;
+                            } else if (typeof item.vdoUrl === 'string') {
+                                item.vdoUrl = [item.vdoUrl];
+                            }
+                        }
+
+                        // Parse pdfUrl
+                        if (item.pdfUrl) {
+                            const parsed = parseCSVField(item.pdfUrl);
+                            if (parsed) {
+                                item.pdfUrl = parsed;
+                            } else if (typeof item.pdfUrl === 'string') {
+                                item.pdfUrl = [item.pdfUrl];
+                            }
+                        }
+
                         if (item.status) {
                             item.status = item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase();
                             if (item.status === 'Filling fast') item.status = 'Filling Fast';
