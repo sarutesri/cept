@@ -13,7 +13,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (listContainer) {
             // Render List
-            listContainer.innerHTML = DB.news.map(n => Components.newsCard(n)).join('');
+            // Render List with Load More
+            const itemsPerPage = 6;
+            let displayedCount = 0;
+            const allNews = DB.news; // Sorted by ID desc in loader
+
+            const renderBatch = () => {
+                const nextBatch = allNews.slice(displayedCount, displayedCount + itemsPerPage);
+                if (nextBatch.length === 0) return;
+
+                const html = nextBatch.map(n => Components.newsCard(n)).join('');
+                listContainer.insertAdjacentHTML('beforeend', html);
+                displayedCount += nextBatch.length;
+
+                // Toggle Button
+                const btn = document.getElementById('btn-load-more');
+                if (btn) {
+                    if (displayedCount >= allNews.length) {
+                        btn.style.display = 'none';
+                    } else {
+                        btn.style.display = 'inline-block';
+                    }
+                }
+            };
+
+            // Initial Render
+            listContainer.innerHTML = '';
+            renderBatch();
+
+            // Add Load More Button if needed
+            if (allNews.length > itemsPerPage) {
+                const btnContainer = document.createElement('div');
+                btnContainer.style.textAlign = 'center';
+                btnContainer.style.marginTop = '2rem';
+                btnContainer.style.width = '100%';
+                btnContainer.style.gridColumn = '1 / -1';
+                btnContainer.innerHTML = `<button id="btn-load-more" class="btn btn-outline" style="padding:0.75rem 2rem;">Load More</button>`;
+                listContainer.parentNode.appendChild(btnContainer);
+
+                document.getElementById('btn-load-more').addEventListener('click', renderBatch);
+            }
         } else if (detailContainer) {
             // Render Detail
             const id = parseInt(getQueryParam('id'));
@@ -44,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div style="text-align:center; margin-bottom:3rem;">
                             <span style="color:var(--accent-maroon); font-weight:700; text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;">${news.category || 'News'}</span>
                             <h1 style="font-size:2.5rem; margin:1rem 0; line-height:1.2; color:var(--text-dark);">${news.title}</h1>
-                            <p style="font-size:1.1rem; color:var(--text-gray);">${news.date}</p>
+                            <p style="font-size:1.1rem; color:var(--text-gray);">${Components.formatDateRange(news.startdate, news.enddate)}</p>
                         </div>
 
                         <!-- Content -->

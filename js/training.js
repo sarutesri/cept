@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div style="flex:1; padding:1.5rem; display:flex; flex-direction:column; justify-content:center;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
                             <span style="font-size:0.85rem; color:var(--text-gray); font-weight:600; text-transform:uppercase;">
-                                ${c.date} • ${c.format || 'On-site'}
+                                ${Components.formatDateRange(c.startdate, c.enddate)} • ${c.format || 'On-site'}
                                 ${c.pdu ? `<span style="display:inline-block; margin-left:0.5rem; background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:4px; text-transform:none;">PDU: ${c.pdu}</span>` : ''}
                             </span>
                         </div>
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <div style="text-align:center; margin-bottom:2rem;">
                         <span class="card-badge ${badgeClass}" style="position:static; display:inline-block; margin-bottom:1rem;">${course.status}</span>
                         <h1 style="font-size:2.5rem; margin-bottom:1rem; line-height:1.2; color:var(--text-dark);">${course.title}</h1>
-                        <p style="font-size:1.1rem; color:var(--text-gray);">${course.date} • ${course.price}</p>
+                        <p style="font-size:1.1rem; color:var(--text-gray);">${Components.formatDateRange(course.startdate, course.enddate)} • ${course.price}</p>
                     </div>
 
                     <!-- Action Button (Moved Up) -->

@@ -71,9 +71,79 @@ export const Components = {
     `;
     },
 
+    // Helper to format date range
+    formatDateRange: (start, end) => {
+        if (!start) return '';
+
+        // Helper to normalize date string to object
+        const parse = (d) => {
+            if (!d) return null;
+            // Match "12-Mar-20", "12 Mar 2020", "21-Jan-26", "21 Jan 2026"
+            // Allow 1-2 digit day, alpha month (hyphen or space), 2 or 4 digit year
+            const match = d.match(/^(\d{1,2})[-/ ]+([A-Za-z]+)[-/ ]+(\d{2,4})$/);
+            if (!match) {
+                // Return as-is if parsing fails
+                return { original: d };
+            }
+
+            let day = parseInt(match[1], 10);
+            let month = match[2]; // Keep as string (Jan, Feb, etc.)
+            let year = parseInt(match[3], 10);
+
+            // Normalize Year (YY -> 20YY)
+            if (year < 100) {
+                year += 2000;
+            }
+
+            return { day, month, year, full: `${day} ${month} ${year}` };
+        };
+
+        const s = parse(start);
+
+        // If single date (no end or same start/end)
+        if (!end || start === end) {
+            return s && s.full ? s.full : start;
+        }
+
+        const e = parse(end);
+
+        // If both parsed successfully
+        if (s && s.year && e && e.year) {
+            // Same Month & Year?
+            if (s.month === e.month && s.year === e.year) {
+                return `${s.day}-${e.day} ${s.month} ${s.year}`;
+            }
+            // Same Year? -> "30 Jan - 02 Feb 2024"
+            if (s.year === e.year) {
+                return `${s.day} ${s.month} - ${e.day} ${e.month} ${s.year}`;
+            }
+            // Diff Year -> "31 Dec 2023 - 02 Jan 2024"
+            return `${s.full} - ${e.full}`;
+        }
+
+        // Fallback
+        return `${start} - ${end}`;
+    },
+
+    // Helper to extract Day/Month for circle
+    getDateParts: (dateStr) => {
+        if (!dateStr) return { day: '', month: '' };
+        // Try robust match
+        const match = dateStr.match(/^(\d{1,2})[-/ ]+([A-Za-z]+)/);
+        if (match) {
+            return { day: match[1], month: match[2] };
+        }
+        return { day: '', month: '' };
+    },
+
     card: (item, type, options = {}) => {
         let badgeClass = item.status === 'Ongoing' || item.status === 'Open' ? 'badge-green' : 'badge-gray';
-        let meta = type === 'course' ? item.date : item.category;
+
+        let meta = item.category;
+        if (type === 'course') {
+            meta = Components.formatDateRange(item.startdate, item.enddate);
+        }
+
         let btnDisabled = type === 'course' && item.status === 'Closed';
 
         let link = type === 'course' ? `training-detail.html?id=${item.id}` : '#';
@@ -106,8 +176,9 @@ export const Components = {
         // Badge Logic
         let badgesHtml = '';
         if (!options.hideBadge) {
+            let badgeText = item.status || Components.formatDateRange(item.startdate, item.enddate);
             badgesHtml = `
-            <span class="card-badge ${badgeClass}">${item.status || item.date}</span>
+            <span class="card-badge ${badgeClass}">${badgeText}</span>
             ${item.pdu ? `<span class="card-badge" style="right:auto; left:10px; background:#fef3c7; color:#b45309;">PDU: ${item.pdu}</span>` : ''}
             `;
         }
@@ -139,7 +210,7 @@ export const Components = {
             <div class="card-body">
                 <div class="card-meta">
                     <span class="text-maroon">${item.category}</span>
-                    <span style="color:var(--text-gray)">${item.date}</span>
+                    <span style="color:var(--text-gray)">${Components.formatDateRange(item.startdate, item.enddate)}</span>
                 </div>
                 <h4 class="card-title">${item.title}</h4>
             </div>
@@ -191,16 +262,18 @@ export const Components = {
             formatBadge = `<span style="background:#f5f3ff; color:#7c3aed; padding:4px 8px; border-radius:4px; font-size:0.8rem; margin-left:0.5rem;">On-site & Online</span>`;
         }
 
+        const dateParts = Components.getDateParts(c.startdate);
+
         return `
         <div style="background:white; border:1px solid #e2e8f0; border-radius:8px; padding:1.5rem; display:flex; flex-wrap:wrap; align-items:center; gap:1.5rem; margin-bottom:0.5rem; transition: all 0.2s; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);" onmouseover="this.style.borderColor='#94a3b8'" onmouseout="this.style.borderColor='#e2e8f0'">
             
             <!-- Date Circle -->
             <div style="text-align:center; min-width:60px;">
                 <div style="font-size:1.5rem; font-weight:700; color:var(--accent-maroon); line-height:1;">
-                    ${c.date.split(' ')[0].split('-')[0]}
+                    ${dateParts.day}
                 </div>
                 <div style="font-size:0.85rem; color:var(--text-gray); text-transform:uppercase;">
-                    ${c.date.split(' ')[1] || ''}
+                    ${dateParts.month}
                 </div>
             </div>
 
